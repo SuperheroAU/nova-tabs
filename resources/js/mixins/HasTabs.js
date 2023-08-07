@@ -26,7 +26,7 @@ export default {
       type: Object,
       required: false,
     },
-    
+
     ...mapProps([
       'shownViaNewRelationModal',
       'mode',
@@ -47,7 +47,8 @@ export default {
       selectedTab: {},
       darkModeClass: '',
       relationFormUniqueId: '',
-      errors: this.validationErrors
+      errors: this.validationErrors,
+      visitedTabs: [],
     };
   },
 
@@ -105,7 +106,7 @@ export default {
             this.locationHash = null;
           }
         }, { once: true });
-      
+
       Nova.store.tabsListenerRegistered = true;
     }
 
@@ -181,6 +182,7 @@ export default {
      */
     handleTabClick(tab, updateUri = true, refreshCodeMirror = true) {
       this.selectedTab = tab;
+      this.visitedTabs.push(tab)
 
       Nova.$emit('nova-tabs-changed', this.getTabsReference(), tab)
 
@@ -315,6 +317,10 @@ export default {
      */
     getErrorColor() {
       return this.panel.errorColor ?? 'red';
+    },
+
+    shouldShowTab(tab) {
+      return this.visitedTabs.includes(tab)
     }
 
   },
