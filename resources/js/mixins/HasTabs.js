@@ -182,7 +182,10 @@ export default {
      */
     handleTabClick(tab, updateUri = true, refreshCodeMirror = true) {
       this.selectedTab = tab;
-      this.visitedTabs.push(tab)
+
+      if (!this.isVisited(tab)) {
+        this.visitedTabs.push(tab)
+      }
 
       Nova.$emit('nova-tabs-changed', this.getTabsReference(), tab)
 
@@ -319,7 +322,7 @@ export default {
       return this.panel.errorColor ?? 'red';
     },
 
-    shouldShowTab(tab) {
+    isVisited(tab) {
       return this.visitedTabs.includes(tab)
     }
 
